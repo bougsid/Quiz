@@ -4,40 +4,28 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "QUIZ_USERS")
 @Component
 @Scope("prototype")
 public class QuizUserAssociation {
-    //    @Id
-//    private long employeeId;
-//    @Id
-//    private long projectId;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column(name = "MARK")
     private float mark;
     @ManyToOne
     @PrimaryKeyJoinColumn(name = "QUIZ_ID", referencedColumnName = "ID")
-  /* if this JPA model doesn't create a table for the "PROJ_EMP" entity,
-  *  please comment out the @PrimaryKeyJoinColumn, and use the ff:
-  *  @JoinColumn(username = "employeeId", updatable = false, insertable = false)
-  * or @JoinColumn(username = "employeeId", updatable = false, insertable = false, referencedColumnName = "id")
-  */
     private Quiz quiz;
     @ManyToOne
     @PrimaryKeyJoinColumn(name = "USER_ID", referencedColumnName = "ID")
-  /* the same goes here:
-  *  if this JPA model doesn't create a table for the "PROJ_EMP" entity,
-  *  please comment out the @PrimaryKeyJoinColumn, and use the ff:
-  *  @JoinColumn(username = "projectId", updatable = false, insertable = false)
-  * or @JoinColumn(username = "projectId", updatable = false, insertable = false, referencedColumnName = "id")
-  */
     private User user;
 
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private boolean active;
     public QuizUserAssociation() {
     }
 
@@ -63,5 +51,29 @@ public class QuizUserAssociation {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }
