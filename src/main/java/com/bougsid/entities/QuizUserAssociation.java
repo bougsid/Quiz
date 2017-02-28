@@ -8,24 +8,32 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "QUIZ_USERS")
+@IdClass(QuizUserID.class)
 @Component
 @Scope("prototype")
 public class QuizUserAssociation {
+    //    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "quiz_id")
+    private Long quizId;
+    @Id
+    @Column(name = "user_id")
+    private Long userId;
+//    private Long id;
     @Column(name = "MARK")
     private float mark;
     @ManyToOne
-    @PrimaryKeyJoinColumn(name = "QUIZ_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "QUIZ_ID", updatable = false, insertable = false)
     private Quiz quiz;
     @ManyToOne
-    @PrimaryKeyJoinColumn(name = "USER_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "USER_ID", updatable = false, insertable = false)
     private User user;
 
     private LocalDate startDate;
     private LocalDate endDate;
     private boolean active;
+
     public QuizUserAssociation() {
     }
 
@@ -75,5 +83,21 @@ public class QuizUserAssociation {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public Long getQuizId() {
+        return quizId;
+    }
+
+    public void setQuizId(Long quizId) {
+        this.quizId = quizId;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }

@@ -45,6 +45,8 @@ public class UserRESTService {
 
     @PostMapping("/affect-quiz")
     public List<QuizUserAssociation> affectQuizToUsers(@RequestBody List<QuizUserAssociation> quizUserAssociations) {
+        System.out.println(quizUserAssociations.get(0).getQuiz());
+        System.out.println(quizUserAssociations.get(0).getQuizId());
         return this.quizUserAssociationRepository.save(quizUserAssociations);
     }
 }
