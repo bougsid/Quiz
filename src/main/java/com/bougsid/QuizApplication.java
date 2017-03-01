@@ -38,7 +38,7 @@ public class QuizApplication implements CommandLineRunner {
     public void run(String... strings) throws Exception {
         User user = new User();
         user.setUsername("bougsid");
-        user.setPassword("bousgid");
+        user.setPassword("bougsid");
         List<Role> roles = new ArrayList<>();
         roles.add(new Role("user"));
         roles.add(new Role("admin"));

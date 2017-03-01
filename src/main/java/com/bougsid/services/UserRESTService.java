@@ -33,7 +33,6 @@ public class UserRESTService {
     public List<QuizUserAssociation> getInformation(final HttpServletRequest request) {
         Claims claims = (Claims) request.getAttribute("claims");
         String username = claims.getSubject();
-        System.out.println("Username =" + username);
         return this.quizUserAssociationRepository.findByUser(this.repository.findByUsername(username));
     }
 
@@ -45,8 +44,6 @@ public class UserRESTService {
 
     @PostMapping("/affect-quiz")
     public List<QuizUserAssociation> affectQuizToUsers(@RequestBody List<QuizUserAssociation> quizUserAssociations) {
-        System.out.println(quizUserAssociations.get(0).getQuiz());
-        System.out.println(quizUserAssociations.get(0).getQuizId());
         return this.quizUserAssociationRepository.save(quizUserAssociations);
     }
 }

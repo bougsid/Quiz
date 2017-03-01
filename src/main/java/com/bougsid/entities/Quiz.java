@@ -1,6 +1,8 @@
 package com.bougsid.entities;
 
+import com.bougsid.entities.deserializer.DurationDeserializer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.springframework.context.annotation.Scope;
 
 import javax.persistence.*;
@@ -17,26 +19,21 @@ public class Quiz {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
-    @JsonIgnore
-    private Duration timeBox;
     @ManyToMany(cascade = CascadeType.ALL)
     private List<Question> questions;
-//
-//    @ManyToMany
-//    private List<User> users;
-
-
+    @JsonDeserialize(using = DurationDeserializer.class)
+    private Duration duration;
     @JsonIgnore
-    @OneToMany(mappedBy="quiz")
+    @OneToMany(mappedBy = "quiz")
     private List<QuizUserAssociation> users;
 
     public Quiz() {
     }
 
-    public Quiz(String title, List<Question> questions,Duration timeBox) {
+    public Quiz(String title, List<Question> questions, Duration duration) {
         this.title = title;
         this.questions = questions;
-        this.timeBox = timeBox;
+        this.duration = duration;
     }
 
     public Long getId() {
@@ -55,12 +52,12 @@ public class Quiz {
         this.title = title;
     }
 
-    public Duration getTimeBox() {
-        return timeBox;
+    public Duration getDuration() {
+        return duration;
     }
 
-    public void setTimeBox(Duration timeBox) {
-        this.timeBox = timeBox;
+    public void setDuration(Duration duration) {
+        this.duration = duration;
     }
 
     public List<Question> getQuestions() {
