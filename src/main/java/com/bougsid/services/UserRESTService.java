@@ -4,11 +4,9 @@ import com.bougsid.dao.QuizUserAssociationRepository;
 import com.bougsid.dao.UserRepository;
 import com.bougsid.entities.QuizUserAssociation;
 import com.bougsid.entities.User;
-import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -27,13 +25,6 @@ public class UserRESTService {
     @GetMapping
     public List<User> getAll() {
         return this.repository.findAll();
-    }
-
-    @GetMapping("/information")
-    public List<QuizUserAssociation> getInformation(final HttpServletRequest request) {
-        Claims claims = (Claims) request.getAttribute("claims");
-        String username = claims.getSubject();
-        return this.quizUserAssociationRepository.findByUser(this.repository.findByUsername(username));
     }
 
     @PutMapping
