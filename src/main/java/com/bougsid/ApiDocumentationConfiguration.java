@@ -36,7 +36,7 @@ public class ApiDocumentationConfiguration {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("Maysham Auth Platform API")
+                .title("Quiz App APIs")
                 .description("Maysham Auth's REST API, all the applications could access the Object model data via JSON.")
                 .version("1.0")
                 .contact(new Contact("Maysham", "https://github.com/ChinasoftNobody/spring-boot", "chinasoft_lgh@outlook.com"))
