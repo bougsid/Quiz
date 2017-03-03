@@ -35,7 +35,7 @@ public class QuizRESTService {
     }
 
     @GetMapping("/{id}")
-    public Quiz addQuiz(@PathVariable(name = "id") Long id) {
+    public Quiz getQuiz(@PathVariable(name = "id") Long id) {
         return this.repository.findOne(id);
     }
 
