@@ -1,5 +1,6 @@
 package com.bougsid.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.context.annotation.Scope;
 
 import javax.persistence.*;
@@ -9,7 +10,7 @@ import javax.persistence.*;
  */
 
 @Entity
-@Table(name = "options" )
+@Table(name = "options")
 @Scope("prototype")
 
 public class Option {
@@ -28,6 +29,7 @@ public class Option {
         this.correct = correct;
     }
 
+    @JsonIgnore
     public Long getId() {
         return id;
     }

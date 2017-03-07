@@ -4,6 +4,7 @@ import com.bougsid.dao.QuizUserAssociationRepository;
 import com.bougsid.dao.UserRepository;
 import com.bougsid.entities.QuizUserAssociation;
 import com.bougsid.entities.User;
+import com.bougsid.metier.UserMetier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +19,8 @@ import java.util.List;
 public class UserRESTService {
     @Autowired
     private UserRepository repository;
-
+    @Autowired
+    private UserMetier metier;
     @Autowired
     private QuizUserAssociationRepository quizUserAssociationRepository;
 
@@ -29,8 +31,13 @@ public class UserRESTService {
 
     @PutMapping
     public List<User> saveAll(@RequestBody List<User> users) {
-        System.out.println(users);
+
         return this.repository.save(users);
+    }
+
+    @GetMapping("/scoreboard/{id}")
+    List<QuizUserAssociation> getUsersOfQuiz(@PathVariable(name = "id") Long quizId) {
+        return this.metier.getUsersOfQuiz(quizId);
     }
 
     @PostMapping("/affect-quiz")

@@ -1,15 +1,16 @@
 package com.bougsid.services;
 
 import com.bougsid.dao.QuizRepository;
-import com.bougsid.dao.QuizUserAssociationRepository;
-import com.bougsid.dao.UserRepository;
 import com.bougsid.entities.Quiz;
+import com.bougsid.entities.QuizTentative;
 import com.bougsid.entities.QuizUserAssociation;
 import com.bougsid.metier.QuizMetier;
-import io.jsonwebtoken.Claims;
+import com.bougsid.util.LoggedUserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,43 +22,45 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/api/quiz")
 public class QuizRESTService {
     @Autowired
+    private LoggedUserUtil loggedUserUtil;
+    @Autowired
     private QuizRepository repository;
     @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private QuizUserAssociationRepository quizUserAssociationRepository;
-    @Autowired
     private QuizMetier metier;
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Quiz> getQuizOfUser(final HttpServletRequest request, @PathVariable(name = "id") Long quizId) {
+        Quiz quiz = this.metier.getQuizOfUser(this.loggedUserUtil.getUser(request), quizId);
+        if (quiz != null) {
+            return new ResponseEntity<>(quiz, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping
+    public Quiz addQuiz(@RequestBody Quiz quiz) {
+        return this.repository.save(quiz);
+    }
 
     @GetMapping("/{page}/{size}")
     public Page<Quiz> getAll(@PathVariable(name = "page") int page, @PathVariable(name = "size") int size) {
         return this.repository.findAll(new PageRequest(page, size));
     }
 
-    @GetMapping("/{id}")
-    public Quiz getQuiz(@PathVariable(name = "id") Long id) {
-        return this.repository.findOne(id);
-    }
-
-    @PostMapping
-    public Quiz addQuiz(@RequestBody Quiz quiz) {
-        System.out.println(quiz.getDuration().toMinutes());
-        return this.repository.save(quiz);
-    }
-
-
     @PostMapping("/result")
-    public QuizUserAssociation getResult(@RequestBody Quiz quiz) {
-        return this.metier.getResult(quiz);
+    public QuizUserAssociation correctQuiz(final HttpServletRequest request, @RequestBody QuizTentative quizTentative) {
+        System.out.println(quizTentative);
+        return this.metier.correctQuizAndSaveResultForUser(quizTentative, this.loggedUserUtil.getUser(request));
     }
 
     @GetMapping("/user-quizzes")
-    public Page<QuizUserAssociation> getQuizzesOfLoggedUser(final HttpServletRequest request,
-                                                            @RequestParam(name = "page") int page,
-                                                            @RequestParam(name = "size") int size) {
-        Claims claims = (Claims) request.getAttribute("claims");
-        String username = claims.getSubject();
-        return this.quizUserAssociationRepository.findByUser(this.userRepository.findByUsername(username), new PageRequest(page, size));
+    public Page<QuizUserAssociation> getQuizzesOfUser(final HttpServletRequest request,
+                                                      @RequestParam(name = "page") int page,
+                                                      @RequestParam(name = "size") int size) {
+        return this.metier.getQuizzesOfUser(
+                this.loggedUserUtil.getUser(request),
+                new PageRequest(page, size));
     }
 
 }

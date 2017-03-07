@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.ServletException;
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
 @RestController
@@ -22,11 +23,10 @@ public class UserController {
 
     @RequestMapping(value = "login", method = RequestMethod.POST)
     public LoginResponse login(@RequestBody final UserLogin login)
-            throws ServletException {
-        System.out.println(login.username);
-        System.out.println(login.password);
+            throws ServletException, UnsupportedEncodingException {
+
         User user = userRepository.findByUsernameAndPassword(login.username, login.password);
-        System.out.println(user);
+
         if (user == null) throw new ServletException("Invalid login");
 
         StringBuilder roles = new StringBuilder();
@@ -34,7 +34,7 @@ public class UserController {
         return new LoginResponse(Jwts.builder()
                 .setSubject(login.username)
                 .claim("roles", roles).setIssuedAt(new Date())
-                .signWith(SignatureAlgorithm.HS256, "secretkey")
+                .signWith(SignatureAlgorithm.HS256, "secretkey".getBytes("UTF-8"))
                 .compact());
     }
 
@@ -47,7 +47,6 @@ public class UserController {
     @SuppressWarnings("unused")
     private static class LoginResponse {
         public String token;
-
         public LoginResponse(final String token) {
             this.token = token;
         }

@@ -20,7 +20,6 @@ public class DurationDeserializer extends JsonDeserializer<Duration> {
             throws IOException, JsonProcessingException {
         ObjectCodec objectCodec = jsonParser.getCodec();
         JsonNode node = objectCodec.readTree(jsonParser);
-        System.out.println(node);
         return Duration.ofSeconds(node.get("seconds").asLong());
     }
 }

@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by Ayoub on 28/02/2017.
  */
-public class QuizUserID implements Serializable {
+public class QuizUserAssociationID implements Serializable {
 
     private Long quizId;
 
@@ -16,8 +16,8 @@ public class QuizUserID implements Serializable {
     }
 
     public boolean equals(Object object) {
-        if (object instanceof QuizUserID) {
-            QuizUserID otherId = (QuizUserID) object;
+        if (object instanceof QuizUserAssociationID) {
+            QuizUserAssociationID otherId = (QuizUserAssociationID) object;
             return (otherId.quizId == this.quizId) && (otherId.userId == this.userId);
         }
         return false;

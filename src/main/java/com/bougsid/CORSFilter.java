@@ -4,19 +4,21 @@ package com.bougsid;
  * Created by ayoub on 10/24/2016.
  */
 
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
+
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-//@Component
-//@Order(Ordered.HIGHEST_PRECEDENCE)
-public class CORSFilter implements Filter
-{
+@Component
+@Order(Ordered.HIGHEST_PRECEDENCE)
+public class CORSFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
-        System.out.println("Call CORS Filter");
         HttpServletResponse response = (HttpServletResponse) res;
         HttpServletRequest request = (HttpServletRequest) req;
         response.setHeader("Access-Control-Allow-Origin", "*");

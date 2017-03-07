@@ -13,10 +13,11 @@ import java.util.List;
  * Created by bougsid.ayoub on 2/23/2017.
  */
 @Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Scope("prototype")
 public class Quiz {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
     private String title;
     @ManyToMany(cascade = CascadeType.ALL)
@@ -74,5 +75,16 @@ public class Quiz {
 
     public void setUsers(List<QuizUserAssociation> users) {
         this.users = users;
+    }
+
+    @Override
+    public String toString() {
+        return "Quiz{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", questions=" + questions +
+                ", duration=" + duration +
+                ", users=" + users +
+                '}';
     }
 }

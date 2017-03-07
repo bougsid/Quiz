@@ -1,5 +1,6 @@
 package com.bougsid.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.context.annotation.Scope;
 
 import javax.persistence.*;
@@ -31,6 +32,7 @@ public class Question {
         this.options = options;
     }
 
+    @JsonIgnore
     public Long getId() {
         return id;
     }
